@@ -1,8 +1,20 @@
 import React from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteSingleNote } from "../lib/api";
+import useHttp from "../hooks/use-http";
+import { useDispatch } from "react-redux";
+import { noteActions } from "../store/note-slice";
+
 const Note = (props) => {
+  
+  const dispatch = useDispatch();
+  const { sendRequest: sendDeleteNoteRequest, status: deleteNoteStatus } =
+    useHttp(deleteSingleNote);
+
+
   const handleClick = () => {
-    props.onDelete(props.id);
+    sendDeleteNoteRequest(props.id);
+    dispatch(noteActions.deleteNoteReducer(props.id));
   };
 
   return (

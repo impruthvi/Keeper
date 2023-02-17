@@ -2,12 +2,19 @@ import { Fab, Zoom } from "@mui/material";
 import React, { useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import AddIcon from '@mui/icons-material/Add';
+import mongoose from "mongoose";
+import useHttp from "../hooks/use-http";
+import { useDispatch } from "react-redux";
+import { noteActions } from "../store/note-slice";
+
+import { addNote as addNotes } from "../lib/api";
 
 const CreateArea = (props) => {
-
+  const dispatch = useDispatch();
   const expand = () => {
     setExpand(true);
   };
+  const { sendRequest: sendCreateNoteRequest, status: createNoteStatus } = useHttp(addNotes);
   
   const close = () => {
     setExpand(false);
@@ -35,10 +42,14 @@ const CreateArea = (props) => {
   };
 
   const submitNote = (event) => {
-    props.onAdd(note);
+    event.preventDefault();
+
+    const _id = new mongoose.Types.ObjectId();
+    note._id = _id;
+    sendCreateNoteRequest(note);
+    dispatch(noteActions.addNoteReducer(note))
     setNote(initialState);
     setExpand(false);
-    event.preventDefault();
   };
 
  
