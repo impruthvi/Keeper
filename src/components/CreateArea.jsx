@@ -1,7 +1,7 @@
 import { Fab, Zoom } from "@mui/material";
 import React, { useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import mongoose from "mongoose";
 import useHttp from "../hooks/use-http";
 import { useDispatch } from "react-redux";
@@ -11,17 +11,15 @@ import { addNote as addNotes } from "../lib/api";
 
 const CreateArea = (props) => {
   const dispatch = useDispatch();
-  const expand = () => {
-    setExpand(true);
-  };
-  const { sendRequest: sendCreateNoteRequest, status: createNoteStatus } = useHttp(addNotes);
-  
-  const close = () => {
-    setExpand(false);
-  };
+  const { sendRequest: sendCreateNoteRequest, status: createNoteStatus } =
+    useHttp(addNotes);
 
-  const ref = useDetectClickOutside({ onTriggered: close });
-  
+  const ref = useDetectClickOutside({
+    onTriggered: () => {
+      setExpand(false);
+    },
+  });
+
   const initialState = {
     title: "",
     content: "",
@@ -47,12 +45,11 @@ const CreateArea = (props) => {
     const _id = new mongoose.Types.ObjectId();
     note._id = _id;
     sendCreateNoteRequest(note);
-    dispatch(noteActions.addNoteReducer(note))
+    dispatch(noteActions.addNoteReducer(note));
     setNote(initialState);
     setExpand(false);
   };
 
- 
   return (
     <div>
       <form className="create-note" ref={ref}>
@@ -66,7 +63,9 @@ const CreateArea = (props) => {
         ) : null}
         <textarea
           name="content"
-          onClick={expand}
+          onClick={() => {
+            setExpand(true);
+          }}
           onChange={handleChange}
           value={note.content}
           placeholder="Take a note..."
