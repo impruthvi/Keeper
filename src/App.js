@@ -6,7 +6,8 @@ import CreateArea from "./components/CreateArea";
 import useHttp from "./hooks/use-http";
 import { getAllNotes } from "./lib/api";
 import { useDispatch, useSelector } from "react-redux";
-import { noteActions } from "./store/note-slice";
+import { setAllNotes } from "./store/note/note.action";
+import { selectAllNotes } from "./store/note/note.selector";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -17,15 +18,16 @@ const App = () => {
     data: loadedNotes,
   } = useHttp(getAllNotes);
 
-  const notes = useSelector((state) => state.note.notes);
+  // const notes = [];
+  const notes = useSelector(selectAllNotes);
 
   useEffect(() => {
     sendGetAllNotesRequest();
   }, [sendGetAllNotesRequest]);
 
   useEffect(() => {
-    dispatch(noteActions.getAllNotesReducer(loadedNotes));
-  }, [dispatch, loadedNotes]);
+    dispatch(setAllNotes(loadedNotes));
+  }, [loadedNotes]);
 
   return (
     <div>

@@ -6,17 +6,20 @@ import Modal from "@mui/material/Modal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSingleNote } from "../lib/api";
 import useHttp from "../hooks/use-http";
-import { useDispatch } from "react-redux";
-import { noteActions } from "../store/note-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { removeNote } from "../store/note/note.action";
+import { selectAllNotes } from "../store/note/note.selector";
 
 const Note = (props) => {
+  const notes = useSelector(selectAllNotes);
+
   const dispatch = useDispatch();
   const { sendRequest: sendDeleteNoteRequest, status: deleteNoteStatus } =
     useHttp(deleteSingleNote);
 
   const handleClick = () => {
     sendDeleteNoteRequest(props.id);
-    dispatch(noteActions.deleteNoteReducer(props.id));
+    dispatch(removeNote(notes,props.id));
   };
 
   const style = {
@@ -57,7 +60,7 @@ const Note = (props) => {
 
   return (
     <>
-      <div className="note" onClick={handleOpen}>
+      <div className="note">
         <h1>{note.title}</h1>
         <p>{note.content}</p>
         <button onClick={handleClick}>
