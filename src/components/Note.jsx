@@ -4,22 +4,18 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteSingleNote } from "../lib/api";
-import useHttp from "../hooks/use-http";
 import { useDispatch, useSelector } from "react-redux";
-import { removeNote } from "../store/note/note.action";
+import { removeNoteStart } from "../store/note/note.action";
 import { selectAllNotes } from "../store/note/note.selector";
 
 const Note = (props) => {
   const notes = useSelector(selectAllNotes);
 
   const dispatch = useDispatch();
-  const { sendRequest: sendDeleteNoteRequest, status: deleteNoteStatus } =
-    useHttp(deleteSingleNote);
-
+ 
   const handleClick = () => {
-    sendDeleteNoteRequest(props.id);
-    dispatch(removeNote(notes,props.id));
+    // sendDeleteNoteRequest(props.id);
+    dispatch(removeNoteStart({ notes, id: props.id }));
   };
 
   const style = {
@@ -38,7 +34,7 @@ const Note = (props) => {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  
+
   const handleClose = () => setOpen(false);
 
   const initialState = {

@@ -22,3 +22,14 @@ export const addNoteStart = ({ note, notes }) => {
 
 export const addNoteFailed = (error) =>
   createAction(NOTE_ACTION_TYPE.ADD_NOTE_FAILED, error);
+
+export const removeNoteStart = ({ notes, id }) => {
+  const filteredNotes = notes.filter((note) => note._id !== id);
+  return createAction(NOTE_ACTION_TYPE.REMOVE_NOTE_START, {
+    notes: filteredNotes,
+    id,
+  });
+};
+
+export const removeNoteFailed = (error) =>
+  createAction(NOTE_ACTION_TYPE.REMOVE_NOTE_FAILED, error);

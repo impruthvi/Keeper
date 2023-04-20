@@ -2,7 +2,7 @@ import { NOTE_ACTION_TYPE } from "./note.types";
 
 const INITIAL_NOTE = {
   notes: [],
-  isLoading: false
+  isLoading: false,
 };
 
 export const noteReducer = (state = INITIAL_NOTE, action) => {
@@ -21,10 +21,10 @@ export const noteReducer = (state = INITIAL_NOTE, action) => {
         ...state,
         notes: payload,
       };
-    case NOTE_ACTION_TYPE.REMOVE_NOTE:
+    case NOTE_ACTION_TYPE.REMOVE_NOTE_START:
       return {
         ...state,
-        notes: payload,
+        notes: payload.notes,
       };
     default:
       return state;
