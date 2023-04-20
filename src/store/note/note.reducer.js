@@ -16,7 +16,7 @@ export const noteReducer = (state = INITIAL_NOTE, action) => {
     case NOTE_ACTION_TYPE.FETCH_NOTE_SUCCESS:
       return { ...state, notes: payload, isLoading: false };
 
-    case NOTE_ACTION_TYPE.ADD_NOTE:
+    case NOTE_ACTION_TYPE.ADD_NOTE_START:
       return {
         ...state,
         notes: payload,

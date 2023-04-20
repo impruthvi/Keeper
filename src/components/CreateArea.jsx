@@ -3,19 +3,16 @@ import React, { useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import AddIcon from "@mui/icons-material/Add";
 import mongoose from "mongoose";
-import useHttp from "../hooks/use-http";
 import { useDispatch, useSelector } from "react-redux";
 // import { noteActions } from "../store/note-slice";
 
-import { addNote as addNotes } from "../lib/api";
-import { addNewNote } from "../store/note/note.action";
+import { addNoteStart } from "../store/note/note.action";
 import { selectAllNotes } from "../store/note/note.selector";
 
 const CreateArea = (props) => {
   const notes = useSelector(selectAllNotes);
   const dispatch = useDispatch();
-  const { sendRequest: sendCreateNoteRequest, status: createNoteStatus } =
-    useHttp(addNotes);
+
 
   const ref = useDetectClickOutside({
     onTriggered: () => {
@@ -47,8 +44,7 @@ const CreateArea = (props) => {
 
     const _id = new mongoose.Types.ObjectId();
     note._id = _id;
-    sendCreateNoteRequest(note);
-    dispatch(addNewNote(notes, note));
+    dispatch(addNoteStart({ notes, note }));
     setNote(initialState);
     setExpand(false);
   };
